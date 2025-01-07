@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DAL.Contexts
 {
-    internal class MVCDemoPLContext : DbContext 
+    public class MVCDemoPLContext : DbContext 
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("server = .; Database = MVCDempPL; Trusted_connection = true; TrustServeCertificate = true "); //MultipleActiveResultSets = true; 
