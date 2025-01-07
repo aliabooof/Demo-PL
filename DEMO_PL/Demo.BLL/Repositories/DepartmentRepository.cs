@@ -12,12 +12,14 @@ namespace Demo.BLL.Repositories
 {
     internal class DepartmentRepository : IDepartmentRepository
     {
-        private MVCDemoPLContext dbcontext;
+        private readonly  MVCDemoPLContext _dbcontext; //
 
-        public DepartmentRepository(MVCDemoPLContext dbcontext) // $1$ ask for object from db context
+        public DepartmentRepository(MVCDemoPLContext dbcontext) // $1$ ask CLR for object from db context
+                                                                // injection mean that dbcontext will hold ref for created object
         {
 
-             //dbcontext = /*new MVCDemoPLContext();*/  
+            //dbcontext = /*new MVCDemoPLContext();*/  $1$
+            _dbcontext = dbcontext;
         }
         public int Add(Department department)
         {

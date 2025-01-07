@@ -8,10 +8,22 @@ using System.Threading.Tasks;
 
 namespace Demo.DAL.Contexts
 {
+    
     public class MVCDemoPLContext : DbContext 
     {
+        // using dependency injection
+        public MVCDemoPLContext(DbContextOptions<MVCDemoPLContext>options):base(options) // instead of overriding onconfiguring
+        {
+            
+        }
+        #region old way 
+        /*public MVCDemoPLContext()
+        {
+            
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("server = .; Database = MVCDempPL; Trusted_connection = true; TrustServeCertificate = true "); //MultipleActiveResultSets = true; 
-       public DbSet<Department> departmen { get; set; }
+            => optionsBuilder.UseSqlServer("server = .; Database = MVCDempPL; Trusted_connection = true; TrustServeCertificate = true "); //MultipleActiveResultSets = true;*/ 
+        #endregion
+        public DbSet<Department> departmen { get; set; }
     }
 }
