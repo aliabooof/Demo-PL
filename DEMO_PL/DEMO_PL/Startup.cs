@@ -29,7 +29,7 @@ namespace DEMO_PL
 
             services.AddDbContext<MVCDemoPLContext>(options =>
             {
-                options.UseSqlServer("server = .; Database = MVCDempPL; Trusted_connection = true; TrustServeCertificate = true "); //MultipleActiveResultSets = true;
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")); //MultipleActiveResultSets = true;
 
 
             });
