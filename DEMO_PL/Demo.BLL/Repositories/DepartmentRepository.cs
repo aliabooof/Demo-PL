@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.DAL.Contexts;
+using System.ComponentModel;
 
 namespace Demo.BLL.Repositories
 {
@@ -23,30 +24,44 @@ namespace Demo.BLL.Repositories
         }
         public int Add(Department department)
         {
-            throw new NotImplementedException(); // if i get a request to controller that is had to create two object
-                                                 // it will open two connection and this is so bad 
-                                                 // so remove creation of database and clr wil created object and it will use dependency injection look for $1$ this is the solution
+            _dbcontext.departments.Add(department);     // if i get a request to controller that is had to create two object
+                                                        // it will open two connection and this is so bad 
+                                                        // so remove creation of database and clr wil created object and it will use dependency injection look for $1$ this is the solution
+            return _dbcontext.SaveChanges();
 
         }
 
         public int Delete(Department department)
         {
-            throw new NotImplementedException();
+            _dbcontext.departments.Remove (department); // WITH TRACKING
+            return _dbcontext.SaveChanges();
+
+
         }
 
         public Department Get(int id)
         {
-            throw new NotImplementedException();
+            
+            /*var department = _dbcontext.departments.Local.Where(d=>d.Id==id).FirstOrDefault();
+
+            if(department is null)
+                department = _dbcontext.departments.Where(d => d.Id == id).FirstOrDefault();
+
+            return department; */
+
+            return _dbcontext.departments.Find(id);
+
+
         }
 
         public IEnumerable<Department> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+            => _dbcontext.departments.ToList();
+       
 
         public int Update(Department department)
         {
-            throw new NotImplementedException();
+            _dbcontext.departments.Update(department); // WITH TRACKING
+            return _dbcontext.SaveChanges();
         }
     }
 }

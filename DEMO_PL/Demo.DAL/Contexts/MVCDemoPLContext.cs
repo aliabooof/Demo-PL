@@ -24,6 +24,6 @@ namespace Demo.DAL.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("server = .; Database = MVCDempPL; Trusted_connection = true; TrustServeCertificate = true "); //MultipleActiveResultSets = true;*/ 
         #endregion
-        public DbSet<Department> departmen { get; set; }
+        public DbSet<Department> departments { get; set; }
     }
 }
