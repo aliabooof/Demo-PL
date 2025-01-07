@@ -49,11 +49,12 @@ namespace DEMO_PL
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(); //manification instead of multipule line all will be merged in one line
+                                  //pundling like all css file will be 1 file so 1 request to all files 
+                                  // photos for example
 
             app.UseRouting();
 
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

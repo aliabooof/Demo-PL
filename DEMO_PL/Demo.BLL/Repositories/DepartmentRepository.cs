@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 namespace Demo.BLL.Repositories
 {
-    internal class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : IDepartmentRepository
     {
         private readonly  MVCDemoPLContext _dbcontext; //
 
