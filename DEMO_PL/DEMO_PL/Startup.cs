@@ -32,9 +32,9 @@ namespace DEMO_PL
             services.AddDbContext<MVCDemoPLContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")); //MultipleActiveResultSets = true;
-
-
-            });
+            }/*,ServiceLifetime.Singleton*/);
+            //services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+            //services.AddSingleton<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         }

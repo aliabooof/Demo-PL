@@ -1,6 +1,7 @@
 ﻿using Demo.BLL.Interfaces;
 using Demo.DAL.Contexts;
 using Demo.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,8 +45,13 @@ namespace Demo.BLL.Repositories
         }
 
         public IEnumerable<T> GetAll()
-            => _dbcontext.Set<T>().ToList();
+        {
+            if (typeof(T) == typeof(Employee))
+               return  (IEnumerable<T>) _dbcontext.Employees.Include(E => E.Department).ToList();
+            else
+                return _dbcontext.Set<T>().ToList();
 
+        }
 
         public int Update(T item)
         {

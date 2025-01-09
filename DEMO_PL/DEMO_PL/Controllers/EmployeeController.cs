@@ -8,25 +8,36 @@ namespace DEMO_PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
-        
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeController(IEmployeeRepository EmployeeRepository) 
+        public EmployeeController(IEmployeeRepository EmployeeRepository,IDepartmentRepository departmentRepository) 
         {
             _employeeRepository = EmployeeRepository;
+            _departmentRepository = departmentRepository;
         }
 
 
         public IActionResult Index()
         {
+            // Binding is One way binding in MVC
+            // means send information from controller to view
+            // 1. ViewData object dictionary [key,value] 
+            ViewData["message"] = "Hello View Data";
+            //2.viewbag --> dynamic object 
+            ViewBag.Message = "Hello View Bag";
+
+
+            /*This happens when ViewData and ViewBag refer to the same underlying data store.
+             * In ASP.NET MVC, both ViewData and ViewBag are backed by the same dictionary (ViewDataDictionary). 
+             * If you set one, both will reflect the change.*/
             var employees = _employeeRepository.GetAll();
-
-
             return View(employees);
         }
         public IActionResult Create()
-        {
-
-            return View();
+        {   
+            //ViewBag.Departments = _departmentRepository.GetAll();
+            
+            return View(); 
         }
 
         [HttpPost]

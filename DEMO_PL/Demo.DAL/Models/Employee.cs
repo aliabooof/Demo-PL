@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,5 +36,11 @@ namespace Demo.DAL.Models
 
         public DateTime HireDate { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
+
+        // [ForeignKey("Department")]
+        public int? DepartmentId { get; set; } // name referr that its foreign key
+                                               // ? allow null cuz it gives error cuz i have employee in the database
+        //navigational property one 
+        public Department Department { get; set; } 
     }
 }

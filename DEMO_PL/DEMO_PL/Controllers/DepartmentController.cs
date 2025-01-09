@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Threading;
 
 namespace DEMO_PL.Controllers
 {
@@ -49,7 +50,11 @@ namespace DEMO_PL.Controllers
         {
             if (ModelState.IsValid)  // server side validation
             {
-                _departmentRepository.Add(department);
+                int count = _departmentRepository.Add(department);
+
+                // 3. Temp data
+                if (count > 0)
+                    TempData["Message"] = "department is created";
                 return RedirectToAction(nameof(Index));
             }
             return View(department); // return with same data 

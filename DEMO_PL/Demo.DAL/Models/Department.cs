@@ -18,5 +18,8 @@ namespace Demo.DAL.Models
         public string Name { get; set; }
 
         public DateTime DateOfCreation { get; set; }
+
+        // navigational property many
+        public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
     }
 }

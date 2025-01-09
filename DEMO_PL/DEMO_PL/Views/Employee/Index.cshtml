@@ -1,10 +1,17 @@
 ﻿@model IEnumerable<Employee>
 
 @{
-    ViewData["Title"] = "All Departments";
-
+    ViewData["Title"] = "All Employee";
+    string VDataMessage = ViewData["Message"] as string; // view data Enforce Type saftey --> Requires casting strongly typed
+    string VBagMeassage = ViewBag.Message; // doesnt Enforce Type saftey -->  doesnt Requires casting weakly  typed
+    //view data is quicker than 
 }
 
+@*<div class="alert alert-success">
+    @ViewData["message"]
+    <br />
+    @ViewBag.Message
+</div>*@
 <h1>All Departments</h1>
 <br />
 <br />
@@ -15,7 +22,8 @@
         <tr>
             <td>@Html.DisplayNameFor(E => E.Name)</td>
             <td>@Html.DisplayNameFor(E => E.Age)</td>
-            <td>@Html.DisplayNameFor(E => E.Address)</td>
+            <td>@Html.DisplayNameFor(E => E.Address)</td>  
+            <td>@Html.DisplayNameFor(E => E.Department)</td>
             <td>@Html.DisplayNameFor(E => E.Salary)</td>
             <td>@Html.DisplayNameFor(E => E.IsActive)</td>
             <td>@Html.DisplayNameFor(E => E.Email)</td>
@@ -31,12 +39,13 @@
                 <td>@employee.Name</td>
                 <td>@employee.Age</td>
                 <td>@employee.Address</td>
+            <td>@Html.DisplayFor(m => employee.Department.Name)</td>
                 <td>@employee.Salary</td>
                 <td>@employee.IsActive</td>
                 <td>@employee.Email</td>
                 <td>@employee.Phone</td>
                 <td>@employee.HireDate.Date</td>
-
+    
                  <td>
                     <a asp-controller="employee" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-warning">
                         <i class="fas fa-eye"></i> Details

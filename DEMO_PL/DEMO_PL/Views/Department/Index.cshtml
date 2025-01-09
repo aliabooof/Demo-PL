@@ -3,6 +3,16 @@
 @{
     ViewData["Title"] = "All Departments";
 }
+@if(TempData["Message"] is not null)
+{
+    <div class="alert alert-primary mt-3">
+        @TempData["message"]
+    </div>
+}
+
+
+
+
 
 <h1>All Departments</h1>
 <br />
