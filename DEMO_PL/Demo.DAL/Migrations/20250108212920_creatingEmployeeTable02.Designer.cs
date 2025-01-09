@@ -4,14 +4,16 @@ using Demo.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Demo.DAL.Migrations
 {
     [DbContext(typeof(MVCDemoPLContext))]
-    partial class MVCDemoPLContextModelSnapshot : ModelSnapshot
+    [Migration("20250108212920_creatingEmployeeTable02")]
+    partial class creatingEmployeeTable02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

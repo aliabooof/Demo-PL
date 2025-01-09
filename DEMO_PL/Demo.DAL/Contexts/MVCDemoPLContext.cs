@@ -14,7 +14,7 @@ namespace Demo.DAL.Contexts
         // using dependency injection
         public MVCDemoPLContext(DbContextOptions<MVCDemoPLContext>options):base(options) // instead of overriding onconfiguring
         {
-            
+
         }
         #region old way 
         /*public MVCDemoPLContext()
@@ -22,8 +22,9 @@ namespace Demo.DAL.Contexts
             
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("server = .; Database = MVCDempPL; Trusted_connection = true; TrustServeCertificate = true "); //MultipleActiveResultSets = true;*/ 
+            => optionsBuilder.UseSqlServer("server = .; Database = MVCDempPL; Trusted_connection = true; TrustServeCertificate = true "); //MultipleActiveResultSets = true;*/
         #endregion
         public DbSet<Department> departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }
