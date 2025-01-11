@@ -12,7 +12,7 @@ namespace Demo.BLL.Repositories
 {
     public class GenericRepository<T> :IGenericRepository<T> where T : class
     {
-        private readonly MVCDemoPLContext _dbcontext;
+        private protected readonly MVCDemoPLContext _dbcontext;
         public GenericRepository(MVCDemoPLContext dbcontext)
 
         {

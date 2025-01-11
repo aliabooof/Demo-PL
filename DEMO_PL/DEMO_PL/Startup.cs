@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Demo.BLL;
 using Demo.BLL.Interfaces;
 using Demo.BLL.Repositories;
 using Demo.DAL.Contexts;
+using DEMO_PL.MappingProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,8 +37,10 @@ namespace DEMO_PL
             }/*,ServiceLifetime.Singleton*/);
             //services.AddTransient<IDepartmentRepository, DepartmentRepository>();
             //services.AddSingleton<IDepartmentRepository, DepartmentRepository>();
-            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+      /*      services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();*/
+            services.AddAutoMapper(M=>M.AddProfile(new EmployeeProfile()) );
+            services.AddScoped<IUnitPOfWork,UnitOfWork > ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

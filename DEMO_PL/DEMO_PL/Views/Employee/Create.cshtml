@@ -1,12 +1,12 @@
 ﻿@using Demo.BLL.Interfaces
-@model Employee
-@inject IDepartmentRepository departmentRepository
+@model EmployeeViewModel
+@*@inject IUnitPOfWork unitPOfWork*@
 @*it wont create new object cuz IdepartmentRepository is scoped*@
 
 @{
     ViewData["Title"] = "Create";
-    // var departments = new SelectList(ViewBag.Departments, "Id" , "Name");
-    var departments = new SelectList(departmentRepository.GetAll(), "Id", "Name");
+    var departments = new SelectList(ViewBag.Departments, "Id" , "Name");
+    // var departments = new SelectList(unitPOfWork.DepartmentRepository.GetAll(), "Id", "Name");
 
 }
 

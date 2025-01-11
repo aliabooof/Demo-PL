@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Employee>
+﻿@model IEnumerable<EmployeeViewModel>
 
 @{
     ViewData["Title"] = "All Employee";
@@ -12,10 +12,23 @@
     <br />
     @ViewBag.Message
 </div>*@
-<h1>All Departments</h1>
+<h1>All Employees </h1>
 <br />
 <br />
 <a asp-action="Create" class="btn btn-primary">Create New Employee</a> <!-- asp-controller="Department"  im in the same controller no need to this line -->
+
+<div class="row justify-content-center align-items-center mt-3">
+    <form class="row col-8 offset-1">
+        <div class="col-8">
+            <input type="search" class="form-control" name="SearchValue" placeholder="Search by name" />
+        </div>
+
+        <div class="col-4">
+            <input type="submit" class="btn-success" />
+        </div>
+
+    </form>
+</div>
 @if(Model.Count() >0)
 {
     <table class="mt-3 table table-striped table-hover">

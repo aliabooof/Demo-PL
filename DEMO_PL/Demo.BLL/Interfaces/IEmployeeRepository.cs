@@ -10,6 +10,6 @@ namespace Demo.BLL.Interfaces
     public interface IEmployeeRepository :IGenericRepository<Employee>
     {
        IQueryable<Employee> GetEmployeesByAddress(string address); // IEnumerable will get all the data then filter here
-                                                                    // IQueryable will get the filtered data from db
+        IQueryable<Employee> SearchEmployeesByName(string name);                                                     // IQueryable will get the filtered data from db
     }
 }
