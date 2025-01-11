@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Demo.BLL.Mock_Repositories
 {
-    internal class MockDepartmentRepository : IDepartmentRepository
+    internal class MockDepartmentRepository /*: IDepartmentRepository*/
     {
        // [testc(department)]
-        public int Add(Department department)
+       /* public Ta Add(Department department)
         {
             throw new NotImplementedException();
         }
 
-        public int Delete(Department department)
+        public void Delete(Department department)
         {
             throw new NotImplementedException();
         }
@@ -31,9 +31,9 @@ namespace Demo.BLL.Mock_Repositories
             throw new NotImplementedException();
         }
 
-        public int Update(Department department)
+        public void Update(Department department)
         {
             throw new NotImplementedException();
-        }
+        }*/
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Demo.DAL.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -31,8 +32,9 @@ namespace DEMO_PL.ViewModels
 
         public DateTime HireDate { get; set; }
 
+        public IFormFile Image { get; set; }
 
-        
+        public string ImageName { get; set; }
         public int? DepartmentId { get; set; } // name referr that its foreign key
                                                // ? allow null cuz it gives error cuz i have employee in the database
         //navigational property one 

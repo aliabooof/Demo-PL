@@ -35,6 +35,11 @@ namespace Demo.DAL.Models
         public DateTime HireDate { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
+        public string ImageName { get; set; }
+
+
+
+
         // [ForeignKey("Department")]
         public int? DepartmentId { get; set; } // name referr that its foreign key
                                                // ? allow null cuz it gives error cuz i have employee in the database

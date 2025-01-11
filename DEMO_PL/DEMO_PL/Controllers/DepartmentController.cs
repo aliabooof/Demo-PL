@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace DEMO_PL.Controllers
 {
@@ -19,20 +20,23 @@ namespace DEMO_PL.Controllers
         // the two depend on IDepartmentRepository so it will be the same code for develep and testing
 
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitPOfWork _unitOfWork;
+
         //public IDepartmentRepository DepartmentRepository { get; }
 
-        public DepartmentController(IDepartmentRepository departmentRepository) // ask clr to create onstance of class implements IDepartmentRepository 
+        public DepartmentController( IUnitPOfWork unitOfWork) // ask clr to create onstance of class implements IDepartmentRepository 
         {
-            _departmentRepository = departmentRepository;
+           
+            _unitOfWork = unitOfWork;
         }
 
         // public non static func 
         // to execute it i have to  create instance of the class 
         // it will execute ctor 
         // initialize _departmentRepository
-        public IActionResult Index() // action index always direct you to the master page for the controller
+        public async Task<IActionResult> Index() // action index always direct you to the master page for the controller
         {
-            var departments = _departmentRepository.GetAll();
+            var departments = await _unitOfWork.DepartmentRepository.GetAll();
 
             //return View(); // returns view whose name is the same name as the action method here it will return Index from file views
             //return View("ali"); // returns view whose name alifrom file views
@@ -46,11 +50,12 @@ namespace DEMO_PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Department department)
+        public async Task<IActionResult> Create(Department department)
         {
             if (ModelState.IsValid)  // server side validation
             {
-                int count = _departmentRepository.Add(department);
+           await  _unitOfWork.DepartmentRepository.Add(department);
+             int count = await _unitOfWork.Complete();
 
                 // 3. Temp data
                 if (count > 0)
@@ -62,12 +67,12 @@ namespace DEMO_PL.Controllers
 
         // department/details/id
         // department/details make id nullable
-        public IActionResult Details(int? id,string viewName = "Details")
+        public async Task<IActionResult> Details(int? id,string viewName = "Details")
         {
             if (id is null)
                 return BadRequest(); // response 400
 
-            var department = _departmentRepository.Get(id.Value);
+            var department = await _unitOfWork.DepartmentRepository.Get(id.Value);
 
             if (department is null)
 
@@ -77,7 +82,7 @@ namespace DEMO_PL.Controllers
 
 
         }
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             /* if (id is null)
                  return BadRequest(); // response 400
@@ -88,11 +93,11 @@ namespace DEMO_PL.Controllers
                  return NotFound(); // return 404
 
              return View(department);*/
-            return Details(id,"Edit");
+            return await Details(id,"Edit");
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute]int id,Department department )
+        public async Task<IActionResult> Edit([FromRoute]int id,Department department )
         {
             if (id != department.Id)
                 return BadRequest();
@@ -100,7 +105,8 @@ namespace DEMO_PL.Controllers
             {
                 try
                 {
-                    _departmentRepository.Update(department);
+                    _unitOfWork.DepartmentRepository.Update(department);
+                   await _unitOfWork.Complete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -113,21 +119,22 @@ namespace DEMO_PL.Controllers
             return View(department);
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int id,Department department)
+        public async Task<IActionResult> Delete([FromRoute] int id,Department department)
         {
             if (id != department.Id)
                 return BadRequest();
          
             try
             {
-                _departmentRepository.Delete(department);
+                _unitOfWork.DepartmentRepository.Delete(department);
+                await _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
 
             }

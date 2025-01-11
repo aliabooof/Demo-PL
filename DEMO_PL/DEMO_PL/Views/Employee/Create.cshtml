@@ -1,12 +1,13 @@
 ﻿@using Demo.BLL.Interfaces
 @model EmployeeViewModel
-@*@inject IUnitPOfWork unitPOfWork*@
+@inject IUnitPOfWork unitPOfWork
 @*it wont create new object cuz IdepartmentRepository is scoped*@
 
 @{
     ViewData["Title"] = "Create";
-    var departments = new SelectList(ViewBag.Departments, "Id" , "Name");
-    // var departments = new SelectList(unitPOfWork.DepartmentRepository.GetAll(), "Id", "Name");
+    @*var departments = new SelectList(ViewBag.Departments, "Id" , "Name");*@
+     var departments = new SelectList(await unitPOfWork.DepartmentRepository.GetAll(), "Id", "Name");
+
 
 }
 
@@ -15,7 +16,7 @@
 <br />
 
 
-<form asp-action="Create" >
+<form asp-action="Create" enctype="multipart/form-data">
 
     <div class="form-group">
         <label class="col-form-label" asp-for="Name"></label>
@@ -74,6 +75,10 @@
         </select>
     </div>
 
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Image"></label>
+        <input class="form-control" type="file" asp-for="Image"/>
+    </div>
 
 
 

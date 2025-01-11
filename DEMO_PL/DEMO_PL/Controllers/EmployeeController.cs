@@ -2,10 +2,12 @@
 using Demo.BLL;
 using Demo.BLL.Interfaces;
 using Demo.DAL.Models;
+using DEMO_PL.Helpers;
 using DEMO_PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DEMO_PL.Controllers
 {
@@ -14,7 +16,7 @@ namespace DEMO_PL.Controllers
         private readonly IUnitPOfWork _unitPOfWork;
 
         /*private readonly IEmployeeRepository _employeeRepository;
-private readonly IDepartmentRepository _departmentRepository;*/
+         private readonly IDepartmentRepository _departmentRepository;*/
         private readonly IMapper _mapper;
 
         public EmployeeController(IUnitPOfWork unitPOfWork/*IEmployeeRepository EmployeeRepository,IDepartmentRepository departmentRepository*/,
@@ -29,7 +31,7 @@ _departmentRepository = departmentRepository;*/
         }
 
 
-        public IActionResult Index(string SearchValue)
+        public async Task<IActionResult> Index(string SearchValue)
         {
 
             // Binding is One way binding in MVC
@@ -45,7 +47,7 @@ _departmentRepository = departmentRepository;*/
 
             IEnumerable<Employee> employees;
             if (string.IsNullOrEmpty(SearchValue)) {
-               employees = _unitPOfWork.EmployeeRepository.GetAll();
+               employees = await _unitPOfWork.EmployeeRepository.GetAll();
                
             }
             else
@@ -56,52 +58,52 @@ _departmentRepository = departmentRepository;*/
             return View(mappedEmps);
 
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {   
-            ViewBag.Departments = _unitPOfWork.DepartmentRepository.GetAll();
+           /* ViewBag.Departments = _unitPOfWork.DepartmentRepository.GetAll();*/
 
             return View(); 
         }
 
         [HttpPost]
-        public IActionResult Create(EmployeeViewModel employeeVM)
+        public async Task<IActionResult> Create(EmployeeViewModel employeeVM)
         {
             if (ModelState.IsValid) 
             {
 
                 // manual mapping
- /*var employee = new Employee()
-                {
-                    Name = employeeVM.Name,
-                    Address = employeeVM.Address,
-                    Age = employeeVM.Age,
-                    Email = employeeVM.Email,
-                    Salary = employeeVM.Salary,
-                    Phone = employeeVM.Phone,
-                    DepartmentId = employeeVM.DepartmentId,
-                    IsActive = employeeVM.IsActive,
-                    HireDate = employeeVM.HireDate,
-                };*/
+                /*var employee = new Employee()
+                               {
+                                   Name = employeeVM.Name,
+                                   Address = employeeVM.Address,
+                                   Age = employeeVM.Age,
+                                   Email = employeeVM.Email,
+                                   Salary = employeeVM.Salary,
+                                   Phone = employeeVM.Phone,
+                                   DepartmentId = employeeVM.DepartmentId,
+                                   IsActive = employeeVM.IsActive,
+                                   HireDate = employeeVM.HireDate,
+                               };*/
 
                 // impliment exciplist casting in class and write lines above 
                 //Employee employee = (Employee)employeeVM;
-
+                employeeVM.ImageName = await DocumentSettings.UploadFileAsync(employeeVM.Image, "images"); 
                 var mappedEmp = _mapper.Map<EmployeeViewModel,Employee>(employeeVM);
-                _unitPOfWork.EmployeeRepository.Add(mappedEmp);
-                _unitPOfWork.Complete();
+               await _unitPOfWork.EmployeeRepository.Add(mappedEmp);
+                 await _unitPOfWork.Complete();
                 return RedirectToAction(nameof(Index));
-                
+
             }
             return View(employeeVM); 
-        }
+        } 
 
         
-        public IActionResult Details(int? id, string viewName = "Details")
+        public async Task<IActionResult> Details(int? id, string viewName = "Details")
         {
             if (id is null)
                 return BadRequest(); 
 
-            var employee = _unitPOfWork.EmployeeRepository.Get(id.Value);
+            var employee = await _unitPOfWork.EmployeeRepository.Get(id.Value);
 
             if (employee is null)
 
@@ -111,14 +113,14 @@ _departmentRepository = departmentRepository;*/
 
 
         }
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             
-            return Details(id, "Edit");
+            return await Details(id, "Edit");
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute] int id, EmployeeViewModel employeeVM)
+        public async Task<IActionResult> Edit([FromRoute] int id, EmployeeViewModel employeeVM)
         {
             if (id != employeeVM.Id)
                 return BadRequest();
@@ -128,7 +130,7 @@ _departmentRepository = departmentRepository;*/
                 {
                     var mappedEmp= _mapper.Map<EmployeeViewModel,Employee>(employeeVM);
                     _unitPOfWork.EmployeeRepository.Update(mappedEmp);
-                    _unitPOfWork.Complete();
+                    await _unitPOfWork.Complete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -141,14 +143,14 @@ _departmentRepository = departmentRepository;*/
             return View(employeeVM);
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int id, EmployeeViewModel employeeVM)
+        public async Task<IActionResult> Delete([FromRoute] int id, EmployeeViewModel employeeVM)
         {
             if (id != employeeVM.Id)
                 return BadRequest();
@@ -157,7 +159,8 @@ _departmentRepository = departmentRepository;*/
             {
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
                 _unitPOfWork.EmployeeRepository.Delete(mappedEmp);
-                _unitPOfWork.Complete();
+                int count = await _unitPOfWork.Complete();
+                await DocumentSettings.DeleteFileAsync(mappedEmp.ImageName, "images");
                 return RedirectToAction(nameof(Index));
 
             }

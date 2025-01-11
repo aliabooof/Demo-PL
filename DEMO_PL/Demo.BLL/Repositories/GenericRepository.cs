@@ -20,43 +20,32 @@ namespace Demo.BLL.Repositories
 
             _dbcontext = dbcontext;
         }
-        public int Add(T item)
-        {
-            _dbcontext.Set<T>().Add(item);
-            return _dbcontext.SaveChanges();
+        public async Task Add(T item) 
+            => await _dbcontext.Set<T>().AddAsync(item);
+ 
 
-        }
+        public void Delete(T item)
+            => _dbcontext.Set<T>().Remove(item);
+    
 
-        public int Delete(T item)
-        {
-            _dbcontext.Set<T>().Remove(item);
-            return _dbcontext.SaveChanges();
-
-
-        }
-
-        public T Get(int id)
-        {
+        public async Task<T> Get(int id)
+             =>await _dbcontext.Set<T>().FindAsync(id);
 
 
-            return _dbcontext.Set<T>().Find(id);
 
-
-        }
-
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             if (typeof(T) == typeof(Employee))
-               return  (IEnumerable<T>) _dbcontext.Employees.Include(E => E.Department).ToList();
+               return  (IEnumerable<T>) await _dbcontext.Employees.Include(E => E.Department).ToListAsync();
             else
-                return _dbcontext.Set<T>().ToList();
+                return  await _dbcontext.Set<T>().ToListAsync();
 
         }
 
-        public int Update(T item)
+        public void Update(T item)
         {
             _dbcontext.Set<T>().Update(item);
-            return _dbcontext.SaveChanges();
+        
         }
     }
 }

@@ -9,11 +9,11 @@ namespace Demo.BLL.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
-        T Get(int id);
-        int Add(T item);
-        int Update(T item);
-        int Delete(T item);
+        Task <IEnumerable<T>> GetAll();
+        Task<T> Get(int id);
+        Task Add(T item);
+        void Update(T item);
+        void Delete(T item);
 
     }
 }
