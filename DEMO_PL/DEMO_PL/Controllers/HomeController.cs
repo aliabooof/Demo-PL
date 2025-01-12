@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using DEMO_PL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace DEMO_PL.Controllers
 {
+    [Authorize]
+    //[Authorize("Admin")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -18,6 +21,7 @@ namespace DEMO_PL.Controllers
             _logger = logger;
         }
 
+        //[AllowAnonymous]
         public IActionResult Index()
         {
             return View();

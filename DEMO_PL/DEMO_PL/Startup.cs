@@ -6,10 +6,13 @@ using Demo.BLL;
 using Demo.BLL.Interfaces;
 using Demo.BLL.Repositories;
 using Demo.DAL.Contexts;
+using Demo.DAL.Models;
 using DEMO_PL.MappingProfiles;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,6 +44,27 @@ namespace DEMO_PL
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();*/
             services.AddAutoMapper(M=>M.AddProfile(new EmployeeProfile()) );
             services.AddScoped<IUnitPOfWork,UnitOfWork > ();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                })
+                .AddEntityFrameworkStores<MVCDemoPLContext>()
+                .AddDefaultTokenProviders();
+
+
+
+           /* services.AddScoped<UserManager<ApplicationUser>>();
+            services.AddScoped<SignInManager<ApplicationUser>>();                                   
+            services.AddScoped<RoleManager <IdentityRole>>();*/
+           // instead
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options=>
+                {
+                    options.LoginPath = "Account/Login";
+                    options.AccessDeniedPath = "Home/Error";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +86,8 @@ namespace DEMO_PL
                                   // photos for example
 
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
